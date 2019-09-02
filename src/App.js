@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
+import BarChart from './components/BarChart';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    data: []
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/deals/chart')
+    .then(res => res.json())
+    .then((data) => {
+      this.setState({ data })
+    })
+    .catch(console.log)
+  }
+
+  render() {
+    let colors = [
+      '#DD1C1A',
+      '#1985A1',
+      '#541388',
+      '#F9C80E',
+      '#F86624',
+      '#009E3F'
+    ];
+
+    return (
+      <div className="App">
+        <h1>Total deals value by stage</h1>
+        <BarChart title="Deals" colors={colors} data={this.state.data}></BarChart>
+      </div>
+    );
+  }
 }
 
 export default App;
